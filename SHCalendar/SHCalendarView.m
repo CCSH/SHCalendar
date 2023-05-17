@@ -102,7 +102,7 @@
     //分割线
     CALayer *layer = [CALayer layer];
     layer.frame = CGRectMake(0, self.weekH - 0.5, self.frame.size.width, 0.5);
-    layer.backgroundColor = [UIColor lightGrayColor].CGColor;
+    layer.backgroundColor = self.lineColor.CGColor;
     [self.weekView.layer addSublayer:layer];
 }
 
@@ -140,6 +140,13 @@
     }
 }
 
+- (void)setCurrentDate:(NSDate *)currentDate{
+    if(_currentDate != currentDate){
+        _currentDate = currentDate;
+        self.dataSoure = [self getDataArrWithDate:currentDate];
+    }
+}
+
 #pragma mark - 刷新界面
 - (void)reloadView{
     
@@ -147,15 +154,12 @@
     if (!self.currentDate) {
         self.currentDate = [NSDate date];
     }
-    if(!self.dataSoure.count){
-        self.dataSoure = [self getDataArrWithDate:self.currentDate];
-    }
     
     //超过规定周
-    self.startWeek = MIN(MAX(self.startWeek, 6), 0);
+    self.startWeek = MAX(MIN(self.startWeek, 6), 0);
     
     //是否存在余数
-    BOOL hasModulo = (self.dataSoure.count/7);
+    BOOL hasModulo = (self.dataSoure.count%7);
     
     //设置整体高度
     CGRect frame = self.frame;
@@ -183,10 +187,11 @@
     NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     components.day = 1; // 定位到当月第一天
     NSDate *firstDay = [calendar dateFromComponents:components];
-    // 默认一周第一天序号为 1 ，而日历中约定为 0 ，故需要减一
+    //获取第一天周几
     NSInteger firstWeekday = [calendar ordinalityOfUnit:NSCalendarUnitWeekday inUnit:NSCalendarUnitWeekOfMonth forDate:firstDay] - 1;
     
-    if (self.startWeek > firstWeekday) {
+    //差几天
+    if(self.startWeek > firstWeekday){
         firstWeekday -= (self.startWeek - 6);
     }else{
         firstWeekday -= self.startWeek;

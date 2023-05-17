@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) UIFont *font;
 //选中颜色(默认 orangeColor)
 @property (nonatomic, copy) UIColor *currentColor;
+//分割线颜色
+@property (nonatomic, copy) UIColor *lineColor;
 //圆角(cornerRadius<0 则为圆)
 @property (nonatomic, assign) CGFloat cornerRadius;
 //星期条高度(默认 30)
