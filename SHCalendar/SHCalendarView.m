@@ -15,30 +15,30 @@
 @property (nonatomic, strong) UIView *weekView;
 //日历内容
 @property (nonatomic, strong) UICollectionView *calendarView;
-
-//选中数据
-@property (nonatomic, strong) SHCalendarModel *selectModel;
-//今天数据
-@property (nonatomic, strong) SHCalendarModel *toDayModel;
-
-//内容size
-@property (nonatomic, assign) CGSize itemSize;
+//数据源(默认当前年、月)
+@property (nonatomic, copy) NSArray <NSDate *>*dataSoure;
 
 @end
 
 @implementation SHCalendarView
 
-static NSString *cellId = @"SHCalendarCell";
-
-static CGFloat weekH = 32;
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.font = [UIFont boldSystemFontOfSize:16];
+        self.currentColor = [UIColor orangeColor];
+        self.cornerRadius = -1;
+        self.weekH = 30;
+    }
+    return self;
+}
 
 #pragma mark - 蓝加载
 - (UICollectionView *)calendarView{
     if (!_calendarView) {
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        self.itemSize = CGSizeMake(self.frame.size.width/7, self.frame.size.width/7);
-        layout.itemSize = self.itemSize;
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = 0;
         layout.sectionInset = UIEdgeInsetsZero;
@@ -52,7 +52,7 @@ static CGFloat weekH = 32;
         _calendarView.bounces = NO;
         
         //注册
-        [_calendarView registerClass:[SHCalendarCell class] forCellWithReuseIdentifier:cellId];
+        [_calendarView registerClass:[SHCalendarCell class] forCellWithReuseIdentifier:@"SHCalendarCell"];
         
         [self addSubview:_calendarView];
     }
@@ -62,7 +62,7 @@ static CGFloat weekH = 32;
 - (UIView *)weekView{
     if (!_weekView) {
         _weekView = [[UIView alloc]init];
-        _weekView.backgroundColor = [UIColor whiteColor];
+        _weekView.backgroundColor = [UIColor clearColor];
         [self addSubview:_weekView];
     }
     return _weekView;
@@ -77,7 +77,7 @@ static CGFloat weekH = 32;
     //设置高度
     CGFloat width = self.frame.size.width/7.0;
     
-    self.weekView.frame = CGRectMake(0, 0, width, weekH);
+    self.weekView.frame = CGRectMake(0, 0, width, self.weekH);
     
     NSArray *weekArray = @[@"日", @"一", @"二", @"三", @"四", @"五", @"六"];
     
@@ -90,7 +90,7 @@ static CGFloat weekH = 32;
             index = index - weekArray.count;
         }
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*width, 0, width, weekH)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*width, 0, width, self.weekH)];
         label.backgroundColor = [UIColor clearColor];
         label.text = weekArray[index];
         label.textColor = [UIColor lightGrayColor];
@@ -101,7 +101,7 @@ static CGFloat weekH = 32;
     
     //分割线
     CALayer *layer = [CALayer layer];
-    layer.frame = CGRectMake(0, weekH - 0.5, self.frame.size.width, 0.5);
+    layer.frame = CGRectMake(0, self.weekH - 0.5, self.frame.size.width, 0.5);
     layer.backgroundColor = [UIColor lightGrayColor].CGColor;
     [self.weekView.layer addSublayer:layer];
 }
@@ -110,31 +110,9 @@ static CGFloat weekH = 32;
 #pragma mark - UICollectionViewDelegate
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
-    SHCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
-    
-    cell.itemSize = self.itemSize;
-    
-    SHCalendarModel *model = self.dataSoure[indexPath.row];
-    
-    //判断是否点击
-    if (self.selectModel) {
-        if (self.selectModel.year == model.year && self.selectModel.month == model.month && self.selectModel.day == model.day) {
-            cell.isSelect = YES;
-        }else{
-            cell.isSelect = NO;
-        }
-    }
-    
-    //判断是否是今天
-    if (self.toDayModel) {
-        if (self.toDayModel.year == model.year && self.toDayModel.month == model.month && self.toDayModel.day == model.day) {
-            cell.isToday = YES;
-        }else{
-            cell.isToday = NO;
-        }
-    }
-    
-    cell.model = model;
+    SHCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SHCalendarCell" forIndexPath:indexPath];
+    cell.model = self.dataSoure[indexPath.row];
+    cell.data = self;
     
     return cell;
 }
@@ -151,12 +129,14 @@ static CGFloat weekH = 32;
     
     SHCalendarCell *cell = (SHCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
-    self.selectModel = cell.model;
-    [self.calendarView reloadData];
-    
-    //回调
-    if (self.selectBlock) {
-        self.selectBlock(self.selectModel);
+    if (cell.isCanClick) {
+        self.currentDate = cell.model;
+        [self.calendarView reloadData];
+        
+        //回调
+        if (self.selectBlock) {
+            self.selectBlock(self.currentDate);
+        }
     }
 }
 
@@ -164,45 +144,36 @@ static CGFloat weekH = 32;
 - (void)reloadView{
     
     //不存在数据源则为b当前 年、月
-    if (!self.dataSoure.count) {
-        //不存在的话就默认今天
-        self.dataSoure = [self getDataArrWithDate:[NSDate date]];
+    if (!self.currentDate) {
+        self.currentDate = [NSDate date];
+    }
+    if(!self.dataSoure.count){
+        self.dataSoure = [self getDataArrWithDate:self.currentDate];
     }
     
     //超过规定周
-    if (self.startWeek > 6) {
-        self.startWeek = 0;
-    }
+    self.startWeek = MIN(MAX(self.startWeek, 6), 0);
     
     //是否存在余数
     BOOL hasModulo = (self.dataSoure.count/7);
     
     //设置整体高度
     CGRect frame = self.frame;
-    frame.size.height = (self.dataSoure.count/7 + hasModulo) * (self.frame.size.width/7) + weekH;
+    frame.size.height = (self.dataSoure.count/7 + hasModulo) * (self.frame.size.width/7) + self.weekH;
     self.frame = frame;
     
     //设置星期条
     [self configWeekHeadView];
 
     //刷新日历内容
-    self.calendarView.frame = CGRectMake(0, weekH, self.frame.size.width,frame.size.height - weekH);
+    self.calendarView.frame = CGRectMake(0, self.weekH, self.frame.size.width, frame.size.height - self.weekH);
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.calendarView.collectionViewLayout;
+    layout.itemSize = CGSizeMake(self.frame.size.width/7, self.frame.size.width/7);
     [self.calendarView reloadData];
 }
 
-#pragma mark 获取指定月的数据
-- (NSArray <SHCalendarModel *>*)getDataArrWithYear:(NSInteger)year month:(NSInteger)month{
-    
-    NSString *time = [NSString stringWithFormat:@"%ld %ld",(long)year,(long)month];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy MM"];
-    NSDate *date = [formatter dateFromString:time];
-    
-    return [self getDataArrWithDate:date];
-}
-
 #pragma mark 获取 date 的月数据
-- (NSArray <SHCalendarModel *>*)getDataArrWithDate:(NSDate *)date{
+- (NSArray <NSDate *>*)getDataArrWithDate:(NSDate *)date{
     
     //此月有多少天
     NSInteger totalDays = [[NSCalendar currentCalendar] rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date].length;
@@ -224,30 +195,25 @@ static CGFloat weekH = 32;
     NSMutableArray *temp = [[NSMutableArray alloc]init];
     
     for (int i = 0; i < totalDays + firstWeekday; i++) {
-        
-        SHCalendarModel *model = [[SHCalendarModel alloc]init];
-        
         if (i < firstWeekday) {//前面补全
-            model.year = 0;
-            model.month = 0;
-            model.day = 0;
+            [temp addObject:@""];
         }else{
-            model.year = components.year;
-            model.month = components.month;
-            model.day = i - firstWeekday + 1;
+            components.year = components.year;
+            components.month = components.month;
+            components.day = i - firstWeekday + 1;
+            [temp addObject:[calendar dateFromComponents:components]];
         }
-        [temp addObject:model];
-        
-        //设置今天
-        [self configToDayWithModel:model];
     }
     return temp;
 }
 
+
 #pragma mark 上一个月
-- (NSArray *)lastMonth{
+- (NSDate *)lastMonth{
     
-    SHCalendarModel *model = [self.dataSoure lastObject];
+    NSDate *date = [self.dataSoure lastObject];
+    NSDateComponents *model = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
+    model.day = 1;
     //本月是
     if (model.month == 1) {
         model.year -= 1;
@@ -255,40 +221,27 @@ static CGFloat weekH = 32;
     }else{
         model.month -= 1;
     }
-    return [self getDataArrWithYear:model.year month:model.month];
+    date = [[NSCalendar currentCalendar] dateFromComponents:model];
+    self.dataSoure = [self getDataArrWithDate:date];
+    [self reloadView];
+    return date;
 }
 
 #pragma mark 下一个月
-- (NSArray *)nextMonth{
-    
-    SHCalendarModel *model = [self.dataSoure lastObject];
+- (NSDate *)nextMonth{
+    NSDate *date = [self.dataSoure lastObject];
+    NSDateComponents *model = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
+    model.day = 1;
     if (model.month == 12) {
         model.year += 1;
         model.month = 1;
     }else{
         model.month += 1;
     }
-    return [self getDataArrWithYear:model.year month:model.month];
-}
-
-- (void)configToDayWithModel:(SHCalendarModel *)model{
-    
-    //获取今天的时间
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *year = [calendar components:NSCalendarUnitYear fromDate:[NSDate date]];
-    NSDateComponents *month = [calendar components:NSCalendarUnitMonth fromDate:[NSDate date]];
-    NSDateComponents *day = [calendar components:NSCalendarUnitDay fromDate:[NSDate date]];
-    
-    //年、月、日 相同则是今天
-    if (model.year == year.year && model.month == month.month && model.day == day.day) {
-        
-        self.toDayModel = model;
-        
-        if (!self.selectModel) {
-            self.selectModel = model;
-        }
-    }
+    date = [[NSCalendar currentCalendar] dateFromComponents:model];
+    self.dataSoure = [self getDataArrWithDate:date];
+    [self reloadView];
+    return date;
 }
 
 @end

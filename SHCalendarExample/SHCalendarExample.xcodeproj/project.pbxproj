@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C8F868F218AD7F20007BD6B /* SHCalendarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F868E218AD7F20007BD6B /* SHCalendarModel.m */; };
-		5C8F8692218AD8380007BD6B /* SHCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F8691218AD8380007BD6B /* SHCalendarCell.m */; };
+		5C4154212A1480B200DAECF1 /* SHCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C41541E2A1480B200DAECF1 /* SHCalendarCell.m */; };
+		5C4154222A1480B200DAECF1 /* SHCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C41541F2A1480B200DAECF1 /* SHCalendarView.m */; };
 		5CBFD7772186F56A008B7B6D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD7762186F56A008B7B6D /* AppDelegate.m */; };
 		5CBFD77A2186F56A008B7B6D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD7792186F56A008B7B6D /* ViewController.m */; };
 		5CBFD77D2186F56A008B7B6D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CBFD77B2186F56A008B7B6D /* Main.storyboard */; };
@@ -17,7 +17,6 @@
 		5CBFD7852186F56C008B7B6D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD7842186F56C008B7B6D /* main.m */; };
 		5CBFD78F2186F56C008B7B6D /* SHCalendarExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD78E2186F56C008B7B6D /* SHCalendarExampleTests.m */; };
 		5CBFD79A2186F56C008B7B6D /* SHCalendarExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD7992186F56C008B7B6D /* SHCalendarExampleUITests.m */; };
-		5CBFD7AA2186F5A2008B7B6D /* SHCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD7A92186F5A2008B7B6D /* SHCalendarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,10 +37,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5C8F868D218AD7F20007BD6B /* SHCalendarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHCalendarModel.h; sourceTree = "<group>"; };
-		5C8F868E218AD7F20007BD6B /* SHCalendarModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHCalendarModel.m; sourceTree = "<group>"; };
-		5C8F8690218AD8380007BD6B /* SHCalendarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHCalendarCell.h; sourceTree = "<group>"; };
-		5C8F8691218AD8380007BD6B /* SHCalendarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHCalendarCell.m; sourceTree = "<group>"; };
+		5C41541B2A1480B200DAECF1 /* SHCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCalendarCell.h; sourceTree = "<group>"; };
+		5C41541D2A1480B200DAECF1 /* SHCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCalendarView.h; sourceTree = "<group>"; };
+		5C41541E2A1480B200DAECF1 /* SHCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCalendarCell.m; sourceTree = "<group>"; };
+		5C41541F2A1480B200DAECF1 /* SHCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCalendarView.m; sourceTree = "<group>"; };
 		5CBFD7722186F56A008B7B6D /* SHCalendarExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHCalendarExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CBFD7752186F56A008B7B6D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5CBFD7762186F56A008B7B6D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -58,8 +57,6 @@
 		5CBFD7952186F56C008B7B6D /* SHCalendarExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SHCalendarExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CBFD7992186F56C008B7B6D /* SHCalendarExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHCalendarExampleUITests.m; sourceTree = "<group>"; };
 		5CBFD79B2186F56C008B7B6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5CBFD7A82186F5A2008B7B6D /* SHCalendarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHCalendarView.h; sourceTree = "<group>"; };
-		5CBFD7A92186F5A2008B7B6D /* SHCalendarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHCalendarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +84,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C41541A2A1480B200DAECF1 /* SHCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				5C41541D2A1480B200DAECF1 /* SHCalendarView.h */,
+				5C41541F2A1480B200DAECF1 /* SHCalendarView.m */,
+				5C41541B2A1480B200DAECF1 /* SHCalendarCell.h */,
+				5C41541E2A1480B200DAECF1 /* SHCalendarCell.m */,
+			);
+			name = SHCalendar;
+			path = ../../SHCalendar;
+			sourceTree = "<group>";
+		};
 		5CBFD7692186F56A008B7B6D = {
 			isa = PBXGroup;
 			children = (
@@ -110,7 +119,7 @@
 		5CBFD7742186F56A008B7B6D /* SHCalendarExample */ = {
 			isa = PBXGroup;
 			children = (
-				5CBFD7A72186F57E008B7B6D /* SHCalendar */,
+				5C41541A2A1480B200DAECF1 /* SHCalendar */,
 				5CBFD7752186F56A008B7B6D /* AppDelegate.h */,
 				5CBFD7762186F56A008B7B6D /* AppDelegate.m */,
 				5CBFD7782186F56A008B7B6D /* ViewController.h */,
@@ -140,19 +149,6 @@
 				5CBFD79B2186F56C008B7B6D /* Info.plist */,
 			);
 			path = SHCalendarExampleUITests;
-			sourceTree = "<group>";
-		};
-		5CBFD7A72186F57E008B7B6D /* SHCalendar */ = {
-			isa = PBXGroup;
-			children = (
-				5CBFD7A82186F5A2008B7B6D /* SHCalendarView.h */,
-				5CBFD7A92186F5A2008B7B6D /* SHCalendarView.m */,
-				5C8F868D218AD7F20007BD6B /* SHCalendarModel.h */,
-				5C8F868E218AD7F20007BD6B /* SHCalendarModel.m */,
-				5C8F8690218AD8380007BD6B /* SHCalendarCell.h */,
-				5C8F8691218AD8380007BD6B /* SHCalendarCell.m */,
-			);
-			path = SHCalendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,12 +281,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C8F8692218AD8380007BD6B /* SHCalendarCell.m in Sources */,
+				5C4154212A1480B200DAECF1 /* SHCalendarCell.m in Sources */,
 				5CBFD77A2186F56A008B7B6D /* ViewController.m in Sources */,
-				5C8F868F218AD7F20007BD6B /* SHCalendarModel.m in Sources */,
+				5C4154222A1480B200DAECF1 /* SHCalendarView.m in Sources */,
 				5CBFD7852186F56C008B7B6D /* main.m in Sources */,
 				5CBFD7772186F56A008B7B6D /* AppDelegate.m in Sources */,
-				5CBFD7AA2186F5A2008B7B6D /* SHCalendarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SHCalendarModel.h"
+#import "SHCalendarView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,17 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface SHCalendarCell : UICollectionViewCell
 
-//宽高
-@property (nonatomic, assign) CGSize itemSize;
-
+@property (nonatomic, assign, readonly) BOOL isCanClick;
 //数据
-@property (nonatomic, strong) SHCalendarModel *model;
-
-//是否点击
-@property (nonatomic, assign) BOOL isSelect;
-
-//是否是今天
-@property (nonatomic, assign) BOOL isToday;
+@property (nonatomic, strong) NSDate *model;
+//定制数据
+@property (nonatomic, strong) SHCalendarView *data;
 
 @end
 
