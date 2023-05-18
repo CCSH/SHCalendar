@@ -9,5 +9,6 @@ Pod::Spec.new do | s |
     s.source = {:git => "https://github.com/CCSH/#{s.name}.git", :tag => "#{s.version}"}
     
     s.source_files = "#{s.name}/*.{h,m}"
+    s.framework = 'UIKit'
 
 end
